@@ -34,7 +34,7 @@ class Item:
         elif int(quantity) < 0:
             raise ValueError('Число должно быть неотрицательным')
         self.__name = name
-        self.price = float(price)
+        self.price = int(price)
         self.quantity = int(quantity)
         Item.all.append(self)
 
@@ -45,6 +45,13 @@ class Item:
     @name.setter
     def name(self, new_name):
         self.__name = new_name[:10]
+
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f'{self.__name}'
 
 
     def calculate_total_price(self) -> float:
