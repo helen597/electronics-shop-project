@@ -20,7 +20,6 @@ class Item:
         :param quantity: Количество товара в магазине.
         """
         if not isinstance(float(price), float):
-        # if not isinstance(float(price), float) and not isinstance(int(price), int):
             raise ValueError('Цена должна быть числом')
         elif float(price) < 0:
             raise ValueError('Число должно быть неотрицательным')
@@ -28,7 +27,6 @@ class Item:
             if not isinstance(float(quantity), float):
                 if not isinstance(int(quantity), int):
                     raise ValueError('Количество должно быть целым числом')
-        # if not isinstance(int(quantity), int) and int(quantity) != float(quantity):
         elif int(quantity) != float(quantity):
             raise ValueError('Количество должно быть целым числом')
         elif int(quantity) < 0:
@@ -53,6 +51,11 @@ class Item:
     def __str__(self):
         return f'{self.__name}'
 
+    def __add__(self, other):
+        if not isinstance(other, Item):
+            raise ValueError("Складывать можно только объекты класса Item и дочерние от них")
+        return self.quantity + other.quantity
+
 
     def calculate_total_price(self) -> float:
         """
@@ -76,7 +79,6 @@ class Item:
         with open(file, 'r', encoding='windows-1251') as csvfile:
             csvreader = csv.DictReader(csvfile, delimiter=',')
             for row in csvreader:
-                print(row)
                 name, price, quantity = row['name'], row['price'], row['quantity']
                 item = cls(name, price, quantity)
 
