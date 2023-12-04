@@ -74,15 +74,28 @@ class Item:
 
 
     @classmethod
-    def instantiate_from_csv(cls, file):
+    def instantiate_from_csv(cls, file="../src/items.csv"):
         cls.all.clear()
-        with open(file, 'r', encoding='windows-1251') as csvfile:
-            csvreader = csv.DictReader(csvfile, delimiter=',')
-            for row in csvreader:
-                name, price, quantity = row['name'], row['price'], row['quantity']
-                item = cls(name, price, quantity)
+        try:
+            with open(file, 'r', encoding='windows-1251') as csvfile:
+                csvreader = csv.DictReader(csvfile, delimiter=',')
+                for row in csvreader:
+                    if row['name'] and row['price'] and row['quantity']:
+                        name, price, quantity = row['name'], row['price'], row['quantity']
+                        item = cls(name, price, quantity)
+                    else:
+                        raise InstantiateCSVError
+        except FileNotFoundError:
+            print(f"Отсутствует файл {file}")
 
 
     @staticmethod
     def string_to_number(str):
         return int(float(str))
+
+class InstantiateCSVError(Exception):
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл items.csv повреждён'
+
+    def __str__(self):
+        return self.message
