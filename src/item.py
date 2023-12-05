@@ -86,7 +86,7 @@ class Item:
                     else:
                         raise InstantiateCSVError
         except FileNotFoundError:
-            print(f"Отсутствует файл {file}")
+            raise FileNotFoundError(f"Отсутствует файл {file}")
 
 
     @staticmethod
